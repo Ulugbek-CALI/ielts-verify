@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Authentication | Biometric Verification Service</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .navy-shield { background-color: #002f5d; } /* Official British Council/IDP Navy */
+        .crimson-line { background-color: #e31837; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <!-- Security Header -->
+    <header class="navy-shield text-white py-6 shadow-2xl border-b-4 crimson-line">
+        <div class="max-w-5xl mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <div class="bg-white p-2 rounded shadow-inner">
+                    <span class="text-blue-900 font-black text-xl tracking-tighter">BVS</span>
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-black tracking-tight uppercase leading-none">Biometric Verification Service</h1>
+                    <p class="text-[10px] font-bold tracking-[0.3em] text-gray-400 mt-1 uppercase">Global Secure Node | Uzbekistan Branch</p>
+                </div>
+            </div>
+            <div class="hidden md:block text-right">
+                <p class="text-[10px] uppercase text-gray-400">Security Status</p>
+                <p class="text-xs font-mono text-green-400">ENCRYPTED UP-LINK ACTIVE</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto mt-12 px-4 mb-20">
+        
+        <!-- Verification Input Box -->
+        <div id="search-container" class="bg-white rounded-2xl shadow-xl p-10 border border-gray-100 text-center">
+            <h2 class="text-2xl font-black text-gray-800 mb-2">VERIFY TEST REPORT FORM</h2>
+            <p class="text-sm text-gray-500 mb-8">Enter the 18-digit TRF number to retrieve authenticated biometric results.</p>
+            
+            <div class="max-w-md mx-auto flex flex-col gap-4">
+                <input type="text" id="trf-input" placeholder="e.g. 25UZ099543YUSU004A" 
+                       class="w-full px-6 py-4 rounded-xl border-2 border-gray-200 focus:border-blue-900 outline-none text-center font-mono text-lg transition-all uppercase">
+                <button onclick="verifyID()" class="w-full py-4 navy-shield text-white rounded-xl font-black tracking-widest hover:bg-blue-800 transition-all uppercase">
+                    Retrieve Secure Record
+                </button>
+            </div>
+            <p id="error-msg" class="mt-4 text-red-500 text-xs font-bold hidden uppercase">Record not found. Check TRF Number.</p>
+        </div>
+
+        <!-- AUTHENTICATED RESULT LAYER -->
+        <div id="result-container" class="hidden">
+            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200 animate-in fade-in zoom-in duration-500">
+                
+                <div class="bg-green-600 text-white px-8 py-4 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span class="h-3 w-3 bg-white rounded-full animate-pulse"></span>
+                        <span class="font-black uppercase tracking-widest text-sm italic">Verification Succeeded</span>
+                    </div>
+                    <span class="font-mono text-xs opacity-80">REF: UZ004-MASTER-NODE</span>
+                </div>
+
+                <div class="p-8">
+                    <div class="flex flex-col md:flex-row gap-12 items-start">
+                        <!-- Photo Section -->
+                        <div class="w-full md:w-1/3">
+                            <img src="Profile.jpg" alt="Yusufjanov, Ulugbek" class="w-full rounded-xl border-4 border-gray-50 shadow-md">
+                            <div class="mt-4 p-4 bg-gray-50 rounded-lg">
+                                <p class="text-[10px] text-gray-400 font-bold uppercase mb-1">Candidate ID</p>
+                                <p class="text-sm font-black text-gray-800 mono">UZ104953</p>
+                            </div>
+                        </div>
+
+                        <!-- Data Section -->
+                        <div class="w-full md:w-2/3">
+                            <h2 class="text-4xl font-black text-blue-950 uppercase tracking-tighter leading-none">YUSUFJANOV,<br>Ulugbek Shukhrat Ugli</h2>
+                            <p class="text-sm text-gray-400 font-bold mt-2 uppercase tracking-widest">Test Date: 24/JAN/2026</p>
+                            
+                            <hr class="my-8 border-gray-100">
+
+                            <!-- Results Grid -->
+                            <div class="grid grid-cols-4 gap-2 text-center mb-8">
+                                <div class="p-3 bg-gray-50 rounded border border-gray-200">
+                                    <p class="text-[9px] font-bold text-gray-400 uppercase">Listening</p>
+                                    <p class="text-lg font-black text-gray-800">5.5</p>
+                                </div>
+                                <div class="p-3 bg-gray-50 rounded border border-gray-200">
+                                    <p class="text-[9px] font-bold text-gray-400 uppercase">Reading</p>
+                                    <p class="text-lg font-black text-gray-800">5.5</p>
+                                </div>
+                                <div class="p-3 bg-gray-50 rounded border border-gray-200">
+                                    <p class="text-[9px] font-bold text-gray-400 uppercase">Writing</p>
+                                    <p class="text-lg font-black text-gray-800">5.0</p>
+                                </div>
+                                <div class="p-3 bg-gray-50 rounded border border-gray-200">
+                                    <p class="text-[9px] font-bold text-gray-400 uppercase">Speaking</p>
+                                    <p class="text-lg font-black text-gray-800">5.0</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-blue-50 p-6 rounded-xl border-l-8 navy-shield flex justify-between items-center">
+                                <div>
+                                    <p class="text-xs font-bold text-blue-400 uppercase tracking-widest">Overall Band Score</p>
+                                    <p class="text-4xl font-black text-blue-900">5.5</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-xs font-bold text-blue-400 uppercase tracking-widest">CEFR Level</p>
+                                    <p class="text-4xl font-black text-blue-900">B1</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer Link -->
+                    <div class="mt-12 text-center">
+                        <a href="Official_IELTS_Merged.png" target="_blank" class="inline-flex items-center space-x-2 text-blue-900 font-bold hover:underline">
+                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <span>Download Full Verified Transcript</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function verifyID() {
+            const trf = document.getElementById('trf-input').value.trim().toUpperCase();
+            const correctTRF = "25UZ099543YUSU004A";
+            
+            if (trf === correctTRF) {
+                document.getElementById('search-container').classList.add('hidden');
+                document.getElementById('result-container').classList.remove('hidden');
+            } else {
+                document.getElementById('error-msg').classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
