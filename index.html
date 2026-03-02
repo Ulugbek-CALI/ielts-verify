@@ -3,154 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biometric Verification | Global Authentication Service</title>
+    <title>Institutional Access | Global Verification Network</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Inter:wght@400;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
-        .navy-shield { background-color: #002f5d; }
-        .crimson-line { background-color: #e31837; }
-        .mono { font-family: 'JetBrains Mono', monospace; }
+        body { font-family: 'Inter', sans-serif; background-color: #0c0e12; color: #e2e8f0; }
+        .navy-gate { background-color: #001a33; }
+        .border-security { border-color: #e31837; }
+        .mono { font-family: 'Roboto Mono', monospace; }
         .hidden { display: none; }
-        .animate-verify { animation: verifyPulse 2s infinite; }
-        @keyframes verifyPulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        .loading-bar { height: 2px; background: #e31837; width: 0%; transition: width 0.5s; }
+        /* Professional Matrix/Security Pulse */
+        .scan-line { height: 100%; width: 100%; background: linear-gradient(to bottom, transparent 50%, rgba(227, 24, 55, 0.05) 50%); background-size: 100% 4px; position: fixed; pointer-events: none; }
     </style>
 </head>
 <body>
+    <div class="scan-line"></div>
 
-    <!-- Security Header -->
-    <header class="navy-shield text-white py-6 shadow-2xl border-b-4 border-[#e31837]">
-        <div class="max-w-5xl mx-auto px-6 flex justify-between items-center">
+    <header class="navy-gate py-6 border-b border-gray-800 shadow-2xl">
+        <div class="max-w-6xl mx-auto px-8 flex justify-between items-center">
             <div class="flex items-center space-x-4">
-                <div class="bg-white p-2 rounded shadow-lg">
-                    <span class="text-[#002f5d] font-black text-xl tracking-tighter uppercase">IDP-NODE</span>
+                <div class="w-12 h-12 bg-white flex items-center justify-center rounded-sm">
+                    <span class="text-blue-900 font-black text-xl">🛡️</span>
                 </div>
                 <div>
-                    <h1 class="text-xl md:text-2xl font-black tracking-tight uppercase leading-none">Biometric Verification Portal</h1>
-                    <p class="text-[10px] font-bold tracking-[0.3em] text-blue-300 mt-1 uppercase">Cloud Node: 25UZ-NAMANGAN</p>
+                    <h1 class="text-xl font-black uppercase tracking-tighter text-white">Verification Management System</h1>
+                    <p class="text-[9px] font-mono text-red-500 uppercase tracking-[0.4em]">Node Protocol: MIIT-UZ-PROD-94</p>
                 </div>
             </div>
-            <div class="hidden md:block text-right">
-                <p class="text-[10px] uppercase text-gray-400">Security Protocol</p>
-                <p class="text-xs font-mono text-green-400">ENCRYPTED UP-LINK [ACTIVE]</p>
+            <div class="text-right text-[10px] font-mono opacity-50">
+                <p id="user-ip">FETCHING CLIENT IP...</p>
+                <p>UPLINK: SECURE (AES-256)</p>
             </div>
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto mt-16 px-4 mb-24">
-        
-        <!-- Verification Input Module -->
-        <div id="search-container" class="bg-white rounded-3xl shadow-2xl p-12 border border-gray-100 text-center">
-            <h2 class="text-2xl font-black text-gray-800 mb-2 uppercase tracking-tight">Verify IELTS Credentials</h2>
-            <p class="text-sm text-gray-500 mb-10">Input the 18-digit Test Report Form (TRF) number to authenticate biometric records.</p>
+    <main class="max-w-4xl mx-auto mt-20 px-6">
+        <!-- Search UI -->
+        <div id="search-box" class="bg-[#161b22] p-12 rounded-lg border border-gray-800 shadow-3xl text-center">
+            <h2 class="text-3xl font-black text-white mb-4 italic tracking-tighter">SECURE RECORD RETRIEVAL</h2>
+            <p class="text-xs text-gray-400 mb-10 font-mono uppercase">Unauthorized access attempts are reported to regional authorities.</p>
             
-            <div class="max-w-md mx-auto flex flex-col gap-5">
-                <input type="text" id="trf-input" placeholder="25UZ099543YUSU004A" 
-                       class="w-full px-6 py-5 rounded-2xl border-2 border-gray-200 focus:border-[#002f5d] outline-none text-center font-mono text-xl transition-all uppercase shadow-inner">
-                <button onclick="verifyID()" class="w-full py-5 navy-shield text-white rounded-2xl font-black tracking-widest hover:bg-blue-800 transition-all uppercase shadow-xl transform active:scale-95">
-                    Authenticate Record
+            <div class="max-w-sm mx-auto space-y-4">
+                <input type="text" id="trf-id" placeholder="TRF NUMBER (18 DIGITS)" 
+                       class="w-full bg-[#0d1117] px-6 py-4 rounded border border-gray-700 text-white font-mono text-center focus:border-red-600 outline-none uppercase transition-all">
+                <button onclick="startVerification()" class="w-full py-4 bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-red-500/20">
+                    Authenticate Identity
                 </button>
             </div>
-            <p id="error-msg" class="mt-6 text-red-600 text-xs font-black hidden uppercase tracking-widest">⚠️ ERROR: Transaction ID not found in master node.</p>
+            <p id="error" class="text-red-500 text-[10px] mt-6 font-mono hidden">SYSTEM ERROR: INVALID RECORD IDENTIFIER.</p>
         </div>
 
-        <!-- AUTHENTICATED PAYLOAD LAYER -->
-        <div id="result-container" class="hidden">
-            <div class="bg-white rounded-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] overflow-hidden border border-gray-100 animate-in fade-in zoom-in duration-700">
-                
-                <div class="bg-green-600 text-white px-8 py-5 flex items-center justify-between">
-                    <div class="flex items-center space-x-3">
-                        <span class="h-3 w-3 bg-white rounded-full animate-verify"></span>
-                        <span class="font-black uppercase tracking-widest text-sm italic">Verification Successful</span>
-                    </div>
-                    <span class="font-mono text-xs opacity-80 italic">NODE: UZ-MIIT-004</span>
+        <!-- Processing UI -->
+        <div id="loading-box" class="hidden text-center py-20">
+            <div class="inline-block w-64 text-left">
+                <p id="log-line" class="text-[10px] font-mono text-blue-400 mb-2">INITIALIZING HANDSHAKE...</p>
+                <div class="w-full bg-gray-800 rounded-full overflow-hidden">
+                    <div id="progress" class="loading-bar"></div>
                 </div>
+            </div>
+        </div>
 
-                <div class="p-10">
-                    <div class="flex flex-col md:flex-row gap-12 items-start">
-                        <!-- Biometric Hardware Link -->
-                        <div class="w-full md:w-1/3">
-                            <div class="relative group">
-                                <div class="absolute -inset-1 bg-gradient-to-r from-blue-900 to-red-600 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
-                                <img src="Profile.jpg" alt="Candidate Photo" class="relative w-full rounded-2xl border-4 border-white shadow-xl">
-                            </div>
-                            <div class="mt-6 p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1">Candidate ID</p>
-                                <p class="text-sm font-black text-gray-800 mono">UZ104953</p>
-                            </div>
-                        </div>
-
-                        <!-- Academic Record Data -->
-                        <div class="w-full md:w-2/3">
-                            <h2 class="text-4xl font-black text-[#002f5d] uppercase tracking-tighter leading-none mb-2">YUSUFJANOV,<br>Ulugbek Shukhrat Ugli</h2>
-                            <p class="text-xs text-gray-400 font-black uppercase tracking-[0.4em]">Biometric Record Authenticated: 24/JAN/2026</p>
-                            
-                            <hr class="my-10 border-gray-100">
-
-                            <!-- Scaled Band Scores -->
-                            <div class="grid grid-cols-4 gap-3 text-center mb-10">
-                                <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100 shadow-sm">
-                                    <p class="text-[9px] font-black text-gray-400 uppercase tracking-tighter mb-1">Listening</p>
-                                    <p class="text-xl font-black text-gray-800">5.5</p>
-                                </div>
-                                <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100 shadow-sm">
-                                    <p class="text-[9px] font-black text-gray-400 uppercase tracking-tighter mb-1">Reading</p>
-                                    <p class="text-xl font-black text-gray-800">5.5</p>
-                                </div>
-                                <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100 shadow-sm">
-                                    <p class="text-[9px] font-black text-gray-400 uppercase tracking-tighter mb-1">Writing</p>
-                                    <p class="text-xl font-black text-gray-800">5.0</p>
-                                </div>
-                                <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100 shadow-sm">
-                                    <p class="text-[9px] font-black text-gray-400 uppercase tracking-tighter mb-1">Speaking</p>
-                                    <p class="text-xl font-black text-gray-800">5.0</p>
-                                </div>
-                            </div>
-
-                            <div class="bg-blue-50 p-8 rounded-3xl border-l-[12px] border-[#002f5d] flex justify-between items-center shadow-inner">
-                                <div>
-                                    <p class="text-xs font-black text-blue-400 uppercase tracking-widest mb-1">Overall Band Score</p>
-                                    <p class="text-5xl font-black text-[#002f5d]">5.5</p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-xs font-black text-blue-400 uppercase tracking-widest mb-1">CEFR Level</p>
-                                    <p class="text-5xl font-black text-[#002f5d]">B1</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Cryptographic Asset Link -->
-                    <div class="mt-16 text-center">
-                        <a href="IELTS_Validated_Transcript.pdf" target="_blank" class="inline-flex items-center space-x-3 text-[#002f5d] font-black uppercase text-xs tracking-widest hover:text-red-600 transition-colors group">
-                            <svg class="h-6 w-6 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                                <path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                            <span>Download Validated PDF Asset</span>
-                        </a>
+        <!-- Result UI -->
+        <div id="result-box" class="hidden bg-white text-gray-900 rounded-lg shadow-2xl overflow-hidden border border-gray-300">
+            <div class="bg-green-600 p-4 flex justify-between items-center">
+                <span class="text-white font-black text-xs uppercase italic tracking-widest">Global Node Authenticated</span>
+                <span class="text-white font-mono text-[9px]">CERT_ID: 25UZ099543YUSU004A</span>
+            </div>
+            <div class="p-10 flex flex-col md:flex-row gap-10">
+                <div class="md:w-1/3">
+                    <img src="Profile.jpg" class="w-full rounded border-4 border-gray-100 grayscale hover:grayscale-0 transition-all duration-700 shadow-xl">
+                    <div class="mt-4 p-3 bg-gray-50 border-l-4 border-red-600">
+                        <p class="text-[9px] text-gray-400 font-bold uppercase">Candidate ID</p>
+                        <p class="text-sm font-black mono text-gray-800">UZ104953</p>
                     </div>
                 </div>
+                <div class="md:w-2/3">
+                    <h2 class="text-4xl font-black uppercase tracking-tighter leading-none text-blue-950">YUSUFJANOV, Ulugbek</h2>
+                    <p class="text-xs font-bold text-gray-400 uppercase mt-2 tracking-widest">Conferred: 24/JAN/2026</p>
+                    <hr class="my-6 border-gray-100">
+                    <div class="grid grid-cols-4 gap-2">
+                        <div class="bg-gray-900 text-white p-3 rounded text-center">
+                            <p class="text-[8px] uppercase opacity-50">L</p>
+                            <p class="text-lg font-black">5.5</p>
+                        </div>
+                        <div class="bg-gray-900 text-white p-3 rounded text-center">
+                            <p class="text-[8px] uppercase opacity-50">R</p>
+                            <p class="text-lg font-black">5.5</p>
+                        </div>
+                        <div class="bg-gray-900 text-white p-3 rounded text-center">
+                            <p class="text-[8px] uppercase opacity-50">W</p>
+                            <p class="text-lg font-black">5.0</p>
+                        </div>
+                        <div class="bg-gray-900 text-white p-3 rounded text-center">
+                            <p class="text-[8px] uppercase opacity-50">S</p>
+                            <p class="text-lg font-black">5.0</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 p-6 bg-blue-50 border border-blue-100 rounded-lg flex justify-between">
+                        <div>
+                            <p class="text-[10px] font-black uppercase text-blue-400">Band Score</p>
+                            <p class="text-4xl font-black text-blue-900">5.5</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] font-black uppercase text-blue-400">CEFR</p>
+                            <p class="text-4xl font-black text-blue-900">B1</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 bg-gray-100 text-center">
+                <a href="IELTS_Validated_Transcript.pdf" class="text-[10px] font-black uppercase text-blue-800 hover:underline tracking-widest">Download Encrypted Document Asset</a>
             </div>
         </div>
     </main>
 
-    <footer class="bg-gray-100 py-10 text-center border-t border-gray-200">
-        <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] max-w-2xl mx-auto px-6 italic">
-            This verification portal is an authorized biometric node. Any unauthorized tampering or brute-force requests are logged via MIIT security protocols. Authorised by British Council & IDP Education.
-        </p>
-    </footer>
-
     <script>
-        function verifyID() {
-            const trf = document.getElementById('trf-input').value.trim().toUpperCase();
-            const correctTRF = "25UZ099543YUSU004A"; // Your official TRF number
-            
-            if (trf === correctTRF) {
-                document.getElementById('search-container').classList.add('hidden');
-                document.getElementById('result-container').classList.remove('hidden');
-            } else {
-                document.getElementById('error-msg').classList.remove('hidden');
+        // Fetch IP for Security Theater
+        fetch('https://api.ipify.org?format=json')
+            .then(res => res.json())
+            .then(data => document.getElementById('user-ip').innerText = "CLIENT IP: " + data.ip);
+
+        function startVerification() {
+            const input = document.getElementById('trf-id').value.toUpperCase();
+            if(input !== "25UZ099543YUSU004A") {
+                document.getElementById('error').classList.remove('hidden');
+                return;
             }
+
+            document.getElementById('search-box').classList.add('hidden');
+            document.getElementById('loading-box').classList.remove('hidden');
+            
+            const logs = [
+                "AUTHENTICATING HANDSHAKE...",
+                "POLLING GLOBAL NODE UZ004...",
+                "DECRYPTING BIOMETRIC PACKET...",
+                "VALIDATING SSL SIGNATURE...",
+                "ACCESS GRANTED."
+            ];
+
+            let i = 0;
+            const logEl = document.getElementById('log-line');
+            const progress = document.getElementById('progress');
+            
+            const interval = setInterval(() => {
+                logEl.innerText = logs[i];
+                progress.style.width = ((i + 1) * 20) + "%";
+                i++;
+                if(i >= logs.length) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        document.getElementById('loading-box').classList.add('hidden');
+                        document.getElementById('result-box').classList.remove('hidden');
+                    }, 500);
+                }
+            }, 600);
         }
     </script>
 </body>
