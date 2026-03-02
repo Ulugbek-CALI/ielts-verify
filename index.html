@@ -20,24 +20,23 @@
         .score-grey { background-color: #f8f9fa; border: 1px solid #e9ecef; }
         .hidden { display: none; }
         
-        /* LOGO SCALING ARCHITECTURE */
         .official-logo { 
-            height: 65px; /* Increased from 38px for high-vis */
+            height: 60px; 
             width: auto;
             filter: grayscale(100%); 
             opacity: 0.9; 
             transition: all 0.3s ease-in-out; 
         }
-        .official-logo:hover { filter: grayscale(0%); opacity: 1; transform: scale(1.05); }
+        .official-logo:hover { filter: grayscale(0%); opacity: 1; }
         .footer-links { font-size: 11px; letter-spacing: 0.1em; font-weight: 700; }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4">
 
-    <!-- AUTHENTICATION GATE -->
+    <!-- AUTHENTICATION GATE (CLEANED) -->
     <div id="login-box" class="bg-white p-12 rounded shadow-2xl w-full max-w-md text-center border-t-8 border-[#e31837]">
         <h1 class="text-3xl font-black mb-2 text-gray-800 uppercase tracking-tighter">IELTS LOGIN</h1>
-        <p class="text-[10px] text-gray-400 mb-10 uppercase tracking-[0.3em]">Institutional Node: 25UZ-MIIT</p>
+        <p class="text-[10px] text-gray-400 mb-10 uppercase tracking-[0.3em]">Official Results Verification Service</p>
         
         <div class="space-y-5">
             <input type="text" id="trf-input" placeholder="ENTER TRF NUMBER" 
@@ -46,10 +45,10 @@
                 Retrieve Records
             </button>
         </div>
-        <p id="error" class="text-red-600 text-[10px] font-black mt-8 hidden uppercase tracking-widest">⚠️ Authentication Failed: record mismatch</p>
+        <p id="error" class="text-red-600 text-[10px] font-black mt-8 hidden uppercase tracking-widest">⚠️ Invalid TRF Number: Record not found</p>
     </div>
 
-    <!-- THE TWIN BROTHER PORTAL -->
+    <!-- THE GLOBAL TWIN PORTAL -->
     <div id="portal" class="hidden w-full max-w-4xl">
         <div class="result-card shadow-[0_20px_50px_rgba(0,0,0,0.3)] overflow-hidden">
             
@@ -113,7 +112,6 @@
                 </div>
             </div>
 
-            <!-- ENHANCED LOGO FOOTER -->
             <div class="bg-[#fcfcfc] p-12 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-10">
                 <div class="flex items-center space-x-16">
                     <img src="idp-logo.jpg" class="official-logo" alt="IDP">
@@ -121,7 +119,7 @@
                 </div>
                 <div class="flex items-center space-x-8 footer-links">
                     <button onclick="window.print()" class="text-blue-800 hover:text-red-600 uppercase transition-colors">Print Result</button>
-                    <a href="IELTS_Validated_Transcript.pdf" target="_blank" class="text-gray-800 hover:text-red-600 uppercase border-l pl-8 border-gray-300">Archive Node</a>
+                    <a href="IELTS_Validated_Transcript.pdf" target="_blank" class="text-gray-800 hover:text-red-600 uppercase border-l pl-8 border-gray-300 tracking-widest">Archive Node</a>
                 </div>
             </div>
         </div>
