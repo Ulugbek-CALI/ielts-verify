@@ -12,108 +12,101 @@
         .header-bg { background-color: #f8f9fa; border-bottom: 1px solid #dee2e6; }
         .score-box { min-width: 100px; padding: 15px; border-radius: 4px; text-align: center; }
         .score-red { background-color: #e31837; color: white; position: relative; }
-        /* The little arrow on the red box */
         .score-red::after {
             content: ''; position: absolute; bottom: -10px; left: 50%;
             transform: translateX(-50%); border-left: 10px solid transparent;
             border-right: 10px solid transparent; border-top: 10px solid #e31837;
         }
         .score-grey { background-color: #f8f9fa; border: 1px solid #e9ecef; }
-        .label-text { color: #6c757d; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
-        .value-text { color: #212529; font-size: 0.9rem; font-weight: 700; }
         .hidden { display: none; }
+        /* Professional Logo Alignment */
+        .idp-logo { height: 35px; filter: grayscale(100%); opacity: 0.8; }
+        .cambridge-logo { height: 35px; filter: grayscale(100%); opacity: 0.6; }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4">
 
-    <!-- LOGIN MODULE (Bypassing Boredom) -->
-    <div id="login-box" class="bg-white p-8 rounded shadow-2xl w-full max-w-md text-center">
-        <h1 class="text-2xl font-bold mb-6 text-gray-800">IELTS Result Verification</h1>
-        <input type="text" id="trf-input" placeholder="ENTER TRF NUMBER" class="w-full p-4 border rounded mb-4 text-center font-mono uppercase focus:ring-2 focus:ring-red-600 outline-none">
-        <button onclick="verify()" class="w-full bg-[#e31837] text-white py-3 rounded font-bold hover:bg-red-700 transition">VIEW RESULTS</button>
-        <p id="error" class="text-red-500 text-xs mt-4 hidden">TRF Number not found in institutional records.</p>
+    <!-- LOGIN MODULE -->
+    <div id="login-box" class="bg-white p-10 rounded shadow-2xl w-full max-w-md text-center">
+        <h1 class="text-2xl font-bold mb-6 text-gray-800 uppercase tracking-tight">Institutional Result Access</h1>
+        <p class="text-xs text-gray-400 mb-6 uppercase">Biometric Node: UZ-MIIT-NAMANGAN</p>
+        <input type="text" id="trf-input" placeholder="ENTER TRF NUMBER" class="w-full p-4 border-2 rounded mb-4 text-center font-mono text-lg uppercase focus:border-red-600 outline-none transition-all">
+        <button onclick="verify()" class="w-full bg-[#e31837] text-white py-4 rounded font-bold hover:bg-red-700 transition uppercase tracking-widest shadow-lg">Authenticate</button>
+        <p id="error" class="text-red-500 text-[10px] font-bold mt-4 hidden uppercase">Access Denied: Record not found in local cache.</p>
     </div>
 
-    <!-- THE "TWIN BROTHER" PORTAL -->
+    <!-- THE IDP TWIN PORTAL -->
     <div id="portal" class="hidden w-full max-w-4xl">
         <div class="result-card shadow-2xl overflow-hidden">
             
-            <!-- Result Header -->
             <div class="header-bg p-6">
                 <h2 class="text-2xl font-light text-gray-700">Get your IELTS results</h2>
             </div>
 
             <div class="p-8">
-                <!-- Data Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-12 mb-10">
                     <div class="flex justify-between border-b pb-2">
-                        <span class="text-gray-600">Candidate Name:</span>
-                        <span class="font-bold">YUSUFJANOV ULUGBEK</span>
+                        <span class="text-gray-500 text-sm">Candidate Name:</span>
+                        <span class="font-bold text-sm uppercase">YUSUFJANOV, Ulugbek Shukhrat Ugli</span>
                     </div>
                     <div class="flex justify-between border-b pb-2">
-                        <span class="text-gray-600">Candidate Number:</span>
-                        <span class="font-bold">099543</span>
+                        <span class="text-gray-500 text-sm">Candidate Number:</span>
+                        <span class="font-bold text-sm">099543</span>
                     </div>
                     <div class="flex justify-between border-b pb-2">
-                        <span class="text-gray-600">Centre Number:</span>
-                        <span class="font-bold">UZ004</span>
+                        <span class="text-gray-500 text-sm">Centre Number:</span>
+                        <span class="font-bold text-sm">UZ004</span>
                     </div>
                     <div class="flex justify-between border-b pb-2">
-                        <span class="text-gray-600">Test Date:</span>
-                        <span class="font-bold">24/JAN/2026</span>
+                        <span class="text-gray-500 text-sm">Test Date:</span>
+                        <span class="font-bold text-sm">24/JAN/2026</span>
                     </div>
                     <div class="flex justify-between border-b pb-2">
-                        <span class="text-gray-600">TRF Number:</span>
-                        <span class="font-bold text-red-600">25UZ099543YUSU004A</span>
+                        <span class="text-gray-500 text-sm">TRF Number:</span>
+                        <span class="font-bold text-sm text-red-600">25UZ099543YUSU004A</span>
                     </div>
                     <div class="flex justify-between border-b pb-2">
-                        <span class="text-gray-600">Test Type:</span>
-                        <span class="font-bold">IELTS Academic</span>
+                        <span class="text-gray-500 text-sm">Test Type:</span>
+                        <span class="font-bold text-sm">IELTS Academic</span>
                     </div>
                 </div>
 
-                <!-- Provisional Notice -->
-                <p class="text-xs text-gray-500 mb-10 leading-relaxed">
+                <p class="text-[11px] text-gray-400 mb-10 leading-relaxed italic">
                     Your results available online are not official. They are provisional only until you receive your official Test Report Form (TRF).
                 </p>
 
-                <!-- THE SCORE BLOCKS (Visual Parity) -->
                 <div class="flex flex-wrap justify-between gap-4">
-                    <!-- Speaking (Red Card) -->
-                    <div class="score-box score-red flex-1">
+                    <div class="score-box score-red flex-1 shadow-md">
                         <p class="text-[10px] font-bold uppercase mb-2">Speaking</p>
-                        <p class="text-3xl font-bold">5.0</p>
+                        <p class="text-4xl font-bold">5.0</p>
                     </div>
-                    <!-- Listening -->
-                    <div class="score-box score-grey flex-1">
+                    <div class="score-box score-grey flex-1 shadow-sm">
                         <p class="text-[10px] font-bold uppercase text-gray-400 mb-2">Listening</p>
-                        <p class="text-3xl font-bold text-gray-700">5.5</p>
+                        <p class="text-4xl font-bold text-gray-700">5.5</p>
                     </div>
-                    <!-- Reading -->
-                    <div class="score-box score-grey flex-1">
+                    <div class="score-box score-grey flex-1 shadow-sm">
                         <p class="text-[10px] font-bold uppercase text-gray-400 mb-2">Reading</p>
-                        <p class="text-3xl font-bold text-gray-700">5.5</p>
+                        <p class="text-4xl font-bold text-gray-700">5.5</p>
                     </div>
-                    <!-- Writing -->
-                    <div class="score-box score-grey flex-1">
+                    <div class="score-box score-grey flex-1 shadow-sm">
                         <p class="text-[10px] font-bold uppercase text-gray-400 mb-2">Writing</p>
-                        <p class="text-3xl font-bold text-gray-700">5.0</p>
+                        <p class="text-4xl font-bold text-gray-700">5.0</p>
                     </div>
-                    <!-- Overall -->
-                    <div class="score-box score-grey flex-1">
+                    <div class="score-box score-grey flex-1 shadow-sm">
                         <p class="text-[10px] font-bold uppercase text-gray-400 mb-2">Overall</p>
-                        <p class="text-3xl font-bold text-red-600">5.5</p>
+                        <p class="text-4xl font-bold text-red-600">5.5</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Footer Section -->
-            <div class="bg-gray-50 p-6 border-t flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="flex items-center space-x-6">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0b/British_Council_logo.svg/1200px-British_Council_logo.svg.png" class="h-6 opacity-70" alt="BC">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/IDP_Education_logo.svg/2560px-IDP_Education_logo.svg.png" class="h-6 opacity-70" alt="IDP">
+            <div class="bg-[#fcfcfc] p-8 border-t flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center space-x-12">
+                    <!-- IDP LOGO (Verified stable link) -->
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/IDP_Education_logo.svg/1024px-IDP_Education_logo.svg.png" class="idp-logo" alt="IDP Official">
+                    <!-- Cambridge LOGO -->
+                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/e/e3/Cambridge_Assessment_English_logo.svg/1200px-Cambridge_Assessment_English_logo.svg.png" class="cambridge-logo" alt="Cambridge Assessment">
                 </div>
-                <button onclick="window.print()" class="text-xs font-bold text-blue-600 hover:underline uppercase">Print Result</button>
+                <button onclick="window.print()" class="text-xs font-bold text-blue-800 hover:text-red-600 uppercase tracking-tighter transition-colors">Print Result</button>
             </div>
         </div>
     </div>
